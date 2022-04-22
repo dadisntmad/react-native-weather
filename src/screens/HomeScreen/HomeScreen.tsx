@@ -1,8 +1,11 @@
 import React from 'react';
-import { View, Text, Pressable, Image, FlatList } from 'react-native';
+import { View, Text, FlatList } from 'react-native';
+import { SearchBar } from '../../components/SearchBar/SearchBar';
 import { Forecast } from '../../components/Forecast/Forecast';
-
-import { EvilIcons } from '@expo/vector-icons';
+import { useSelector } from 'react-redux';
+import { selectWeather } from '../../selectors/selectors';
+import { getCurrentDate } from '../../utils/getDate';
+import { imagePicker } from '../../utils/imagePicker';
 
 import sunny from '../../../assets/weather/sunny.png';
 import rain from '../../../assets/weather/rain.png';
@@ -46,32 +49,42 @@ const data = [
 ];
 
 export const HomeScreen = () => {
+  const weather = useSelector(selectWeather);
+
   return (
     <View style={styles.container}>
-      <Pressable>
-        <EvilIcons style={styles.icon} name="search" size={36} color="white" />
-      </Pressable>
-      <View style={styles.location}>
-        <Text style={styles.city}>London,</Text>
-        <Text style={styles.country}>United Kingdom</Text>
-        <Text style={styles.date}>Thursday 21 April 2022</Text>
+      <View style={styles.inputContainer}>
+        <SearchBar />
       </View>
-      <View style={styles.weather}>
-        <Text style={styles.temperature}>17°</Text>
-        <View style={styles.weatherInfo}>
-          <Image source={sunny} style={{ width: 25, height: 25 }} />
-          <Text style={styles.description}>Sunny</Text>
+      {weather.main ? (
+        <View>
+          <View style={styles.location}>
+            <Text style={styles.city}>{weather.name},</Text>
+            <Text style={styles.country}>{weather.sys?.country}</Text>
+            <Text style={styles.date}>{getCurrentDate()}</Text>
+          </View>
+          <View style={styles.weather}>
+            <Text style={styles.temperature}>{Math.round(weather.main.temp)}°</Text>
+            <View style={styles.weatherInfo}>
+              {imagePicker(weather.weather[0].id)}
+              <Text style={styles.description}>{weather.weather[0].description}</Text>
+            </View>
+          </View>
+          <View style={styles.forecast}>
+            <FlatList
+              data={data}
+              keyExtractor={(item) => item.id}
+              renderItem={({ item }) => <Forecast forecast={item} />}
+              showsHorizontalScrollIndicator={false}
+              horizontal
+            />
+          </View>
         </View>
-      </View>
-      <View style={styles.forecast}>
-        <FlatList
-          data={data}
-          keyExtractor={(item) => item.id}
-          renderItem={({ item }) => <Forecast forecast={item} />}
-          showsHorizontalScrollIndicator={false}
-          horizontal
-        />
-      </View>
+      ) : (
+        <View style={styles.empty}>
+          <Text style={styles.emptyIcon}>no data 🙃</Text>
+        </View>
+      )}
     </View>
   );
 };

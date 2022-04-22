@@ -5,6 +5,12 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#477DF3',
   },
+  inputContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    paddingLeft: 14,
+  },
   icon: {
     alignSelf: 'flex-end',
     paddingRight: 14,
@@ -54,6 +60,17 @@ const styles = StyleSheet.create({
     borderRadius: 50,
     marginTop: 130,
     padding: 32,
+  },
+  empty: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  emptyIcon: {
+    textTransform: 'uppercase',
+    color: 'white',
+    fontSize: 24,
+    fontWeight: 'bold',
   },
 });
 
