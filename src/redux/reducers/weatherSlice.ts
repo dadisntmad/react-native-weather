@@ -1,12 +1,14 @@
+import { ForecastType } from './../../types/weather';
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { WeatherSliceState, WeatherType } from '../../types/weather';
-import { fetchWeather } from '../actions/weather';
+import { fetchForecast, fetchWeather } from '../actions/weather';
 
 const initialState: WeatherSliceState = {
   weather: {} as WeatherType,
   isLoading: false,
   error: '',
   location: '',
+  forecast: [],
 };
 
 const weatherSlice = createSlice({
@@ -27,6 +29,18 @@ const weatherSlice = createSlice({
       state.isLoading = true;
     },
     [fetchWeather.rejected.type]: (state, action: PayloadAction<string>) => {
+      state.isLoading = false;
+      state.error = action.payload;
+    },
+    [fetchForecast.fulfilled.type]: (state, action: PayloadAction<ForecastType[]>) => {
+      state.isLoading = false;
+      state.error = '';
+      state.forecast = action.payload;
+    },
+    [fetchForecast.pending.type]: (state) => {
+      state.isLoading = true;
+    },
+    [fetchForecast.rejected.type]: (state, action: PayloadAction<string>) => {
       state.isLoading = false;
       state.error = action.payload;
     },

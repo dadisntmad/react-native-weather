@@ -1,7 +1,7 @@
 import React from 'react';
 import { TextInput } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
-import { fetchWeather } from '../../redux/actions/weather';
+import { fetchForecast, fetchWeather } from '../../redux/actions/weather';
 import { setLocation } from '../../redux/reducers/weatherSlice';
 import { selectLocation } from '../../selectors/selectors';
 
@@ -11,6 +11,7 @@ export const SearchBar = () => {
 
   const searchForWeather = () => {
     dispatch(fetchWeather(location));
+    dispatch(fetchForecast(location));
     dispatch(setLocation(''));
   };
 

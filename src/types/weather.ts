@@ -3,6 +3,7 @@ export type WeatherSliceState = {
   isLoading: boolean;
   error: string;
   location: string;
+  forecast: ForecastType[];
 };
 
 export type WeatherType = {
@@ -10,6 +11,12 @@ export type WeatherType = {
   sys: Country;
   main: Main;
   weather: Weather[];
+};
+
+export type ForecastType = {
+  dt_txt: string;
+  weather: Weather[];
+  main: Main;
 };
 
 type Country = {
@@ -22,5 +29,5 @@ type Main = {
 
 type Weather = {
   id: number;
-  description: string;
+  description?: string;
 };
